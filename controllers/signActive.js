@@ -199,6 +199,20 @@ async function getServerDate(ctx, next) {
   return ctx.response.body = data
 }
 
+function updateUserInfo(ctx, next) {
+  knex('userinfo').where('wxopenid', '=', ctx.request.body.wxopenid)
+  .update({
+    realname: ctx.request.body.realname,
+    department: ctx.request.body.department
+  }).catch(function (e) {
+      console.error('---------->', e);
+  }).then(function (res) {
+      data.result = res;
+      console.log("update");
+      return ctx.response.body = data;
+    });
+}
+
 module.exports = {
   get,
   post,
@@ -208,5 +222,6 @@ module.exports = {
   isSigned,
   getAllSignUsersByOneActivity,
   getServerDate,
-  cancelSignup
+  cancelSignup,
+  updateUserInfo
 }

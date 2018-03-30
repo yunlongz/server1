@@ -5,7 +5,6 @@ const router = require('koa-router')({
     prefix: '/weapp'
 })
 const controllers = require('../controllers')
-
 // 从 sdk 中取出中间件
 // 这里展示如何使用 Koa 中间件完成登录态的颁发与验证
 const { auth: { authorizationMiddleware, validationMiddleware } } = require('../qcloud')
@@ -35,6 +34,7 @@ router.post('/message', controllers.message.post)
 router.get('/signActive',controllers.signActive.get)
 router.post('/sinsert', controllers.signActive.post)
 router.post('/insertUserInfo', controllers.signActive.insertUserInfo)
+router.post('/updateUserInfo', controllers.signActive.updateUserInfo)
 
 router.get('/getOpenId', controllers.signActive.getOpenId)
 //查看当前用户是否已经实名制
