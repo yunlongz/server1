@@ -46,6 +46,8 @@ router.get('/getAllSignUsersByOneActivity', controllers.signActive.getAllSignUse
 
 router.get('/getServerDate', controllers.signActive.getServerDate)
 
+router.get('/getOwnList', controllers.signActive.getOwnList)
+
 router.post('/cancelSignup', controllers.signActive.cancelSignup)
 
 module.exports = router

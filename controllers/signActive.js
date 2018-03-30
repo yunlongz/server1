@@ -68,12 +68,12 @@ async function get(ctx, next) {
   let requestData = {
     signdate: ctx.request.query.currentDate,
     activityname: ctx.request.query.activityName,
-    status:1
+    status: 1
   }
-  if (ctx.request.query.wxopenid){
+  if (ctx.request.query.wxopenid) {
     requestData.wxopenid = ctx.request.query.wxopenid
   }
-    await knex('signinfo').innerJoin('userinfo', 'signinfo.userid', 'userinfo.wxopenid').where(requestData).select().limit(10).offset(currentPage * 10).orderBy('signdate', 'desc')
+  await knex('signinfo').innerJoin('userinfo', 'signinfo.userid', 'userinfo.wxopenid').where(requestData).select().limit(10).offset(currentPage * 10).orderBy('signdate', 'desc')
     .then(function (res) {
       data.list = res;
     })
@@ -81,7 +81,7 @@ async function get(ctx, next) {
       console.error(e);
     });
 
-    await knex('signinfo').innerJoin('userinfo', 'signinfo.userid', 'userinfo.wxopenid').where(requestData).select().count().then(function (res) {
+  await knex('signinfo').innerJoin('userinfo', 'signinfo.userid', 'userinfo.wxopenid').where(requestData).select().count().then(function (res) {
     data.totalPage = Math.ceil(res[0]["count(*)"] / 10)
     data.totalCount = res[0]["count(*)"]
   })
@@ -100,7 +100,7 @@ async function post(ctx, next) {
     signdate: ctx.request.body.signdate,
     activityid: ctx.request.body.activityid,
     activityname: ctx.request.body.activityname,
-    status:1
+    status: 1
   }
 
   await knex('signinfo').insert(information)
@@ -192,6 +192,32 @@ async function cancelSignup(ctx, next) {
   return ctx.response.body = data;
 }
 
+async function getOwnList(ctx, next) {
+  let data = {}
+  let requestData = {
+    userid: ctx.request.query.wxopenid
+  }
+  let currentPage = ctx.request.query.currentPage
+  await knex('signinfo').innerJoin('userinfo', 'signinfo.userid', 'userinfo.wxopenid').where('signinfo.userid', requestData.userid).select().limit(10).offset(currentPage * 10).orderBy('signdate', 'desc')
+    .then(function (res) {
+      data.list = res;
+    })
+    .catch(function (e) {
+      console.error(e);
+    });
+
+  await knex('signinfo').innerJoin('userinfo', 'signinfo.userid', 'userinfo.wxopenid').where('signinfo.userid', requestData.userid).select().count().then(function (res) {
+    data.totalPage = Math.ceil(res[0]["count(*)"] / 10)
+    data.totalCount = res[0]["count(*)"]
+  })
+    .catch(function (e) {
+      console.error(e);
+    });
+
+  return ctx.response.body = data;
+}
+
+
 async function getServerDate(ctx, next) {
   let data = {
     timestamp: new Date().getTime()
@@ -208,5 +234,6 @@ module.exports = {
   isSigned,
   getAllSignUsersByOneActivity,
   getServerDate,
-  cancelSignup
+  cancelSignup,
+  getOwnList
 }
