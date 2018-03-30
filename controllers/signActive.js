@@ -217,7 +217,6 @@ async function getOwnList(ctx, next) {
   return ctx.response.body = data;
 }
 
-
 async function getServerDate(ctx, next) {
   let data = {
     timestamp: new Date().getTime()
