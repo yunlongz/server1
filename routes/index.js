@@ -40,6 +40,7 @@ router.post('/insertUserInfo', controllers.signActive.insertUserInfo)
 router.get('/getOpenId', controllers.signActive.getOpenId)
 //查看当前用户是否已经实名制
 router.get('/getUserInfo', controllers.signActive.getUserInfo)
+router.get('/getUserInfo', controllers.signActive.updateUserInfo)
 
 router.get('/isSigned', controllers.signActive.isSigned)
 
