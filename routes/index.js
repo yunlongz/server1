@@ -54,4 +54,6 @@ router.post('/cancelSignup', controllers.signActive.cancelSignup)
 
 router.get('/getToken', controllers.common.getToken)
 
+router.get('/sendMailToManager', controllers.common.sendMailToManager)
+
 module.exports = router

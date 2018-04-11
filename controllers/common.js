@@ -1,6 +1,7 @@
 var CONF = require('../config.js')
 const Koa = require('koa')
 var request = require('sync-request');
+
 var knex = require('knex')({
   client: 'mysql',
   connection: {
@@ -29,12 +30,28 @@ async function getToken(ctx, next) {
   //   }
   // })
   data = request('GET', url);
-  
+
   return ctx.response.body = data.getBody('utf8')
 
+}
+//获取数据库数据，生成excel，发送邮件
+
+async function sendMailToManager(ctx, next) {
+  let data = {ddd:"fuck"}
+  await knex('userinfo').select()
+    .catch(function (e) {
+      console.error('---------->', e);
+    })
+    .then(function (res) {
+      data.result = res
+      console.log(res)
+      
+    });
+  return ctx.response.body = data;
 }
 
 
 module.exports = {
-  getToken
+  getToken,
+  sendMailToManager
 }
