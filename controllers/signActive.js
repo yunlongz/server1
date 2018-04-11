@@ -224,18 +224,19 @@ async function getServerDate(ctx, next) {
   return ctx.response.body = data
 }
 
-function updateUserInfo(ctx, next) {
-  knex('userinfo').where('wxopenid', '=', ctx.request.body.wxopenid)
+async function updateUserInfo(ctx, next) {
+  let data = {}
+  await knex('userinfo').where('wxopenid', '=', ctx.request.body.wxopenid)
     .update({
       realname: ctx.request.body.realname,
       department: ctx.request.body.department
     }).catch(function (e) {
       console.error('---------->', e);
     }).then(function (res) {
+      console.log("update" + ctx.request.body.realname);
       data.result = res;
-      console.log("update");
-      return ctx.response.body = data;
     });
+  return ctx.response.body = data;
 }
 
 module.exports = {
