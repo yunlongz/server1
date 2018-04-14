@@ -239,6 +239,48 @@ async function updateUserInfo(ctx, next) {
   return ctx.response.body = data;
 }
 
+async function getActivityList(ctx, next) {
+  let data = {};
+  await knex('activityinfo')
+    .orderByRaw('name, activityStartTime, activityid')
+    .then((res)=>{
+      res.map((item, i)=>{
+        if (!data[item.name]) {
+          data[item.name] = [];
+        }
+        data[item.name].push(item);
+      })
+    });
+  return ctx.response.body = data;
+}
+
+async function updateActivity(ctx, next) {
+  let data = {};
+  let reqdata = {};
+
+  for (let key in ctx.request.body) {
+    if (key != 'id') {
+      if (ctx.request.body[key] && ctx.request.body[key] != '') {
+        reqdata[key] = ctx.request.body[key]
+      }
+    }
+  }
+  await knex('activityinfo').where('id', '=', ctx.request.body.id)
+    .update(reqdata).then((res) => {
+      data = res;
+    })
+  return ctx.response.body = data;
+}
+
+async function deleteActivity(ctx, next) {
+  let data = {};
+  await knex('activityinfo').where('id', '=', ctx.request.body.id)
+    .del().then((res) => {
+      data = res;
+    })
+  return ctx.response.body = data;
+}
+
 module.exports = {
   get,
   post,
@@ -250,5 +292,8 @@ module.exports = {
   getServerDate,
   cancelSignup,
   getOwnList,
-  updateUserInfo
+  updateUserInfo,
+  getActivityList,
+  updateActivity,
+  deleteActivity
 }

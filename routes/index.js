@@ -52,6 +52,12 @@ router.get('/getOwnList', controllers.signActive.getOwnList)
 
 router.post('/cancelSignup', controllers.signActive.cancelSignup)
 
+router.get('/getActivityList', controllers.signActive.getActivityList)
+
+router.post('/updateActivity', controllers.signActive.updateActivity)
+
+router.post('/deleteActivity', controllers.signActive.deleteActivity)
+
 router.get('/getToken', controllers.common.getToken)
 
 router.get('/sendMailToManager', controllers.common.sendMailToManager)
