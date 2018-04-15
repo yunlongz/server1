@@ -268,6 +268,9 @@ async function updateActivity(ctx, next) {
   await knex('activityinfo').where('id', '=', ctx.request.body.id)
     .update(reqdata).then((res) => {
       data = res;
+    }).catch(function (e) {
+      console.error('---------->', e);
+      throw e
     })
   return ctx.response.body = data;
 }
